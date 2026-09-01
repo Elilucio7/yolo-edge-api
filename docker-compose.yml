@@ -1,0 +1,42 @@
+# docker-compose.yml
+# Versao: Compose Specification (sem campo "version" obsoleto)
+
+
+services:
+  yolo-inference:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+
+    # Nome do container para facilitar logs e exec
+    container_name: yolo-inference
+
+
+    # ── Variaveis de ambiente ──────────────────────────────
+    # MODEL_NAME: define qual arquivo de pesos carregar.
+    # Altere aqui para trocar de modelo sem rebuild.
+    environment:
+      - MODEL_NAME=yolov8n.pt
+
+
+    # ── Mapeamento de volumes ──────────────────────────────
+    # ./output no host espelha /app/output no container.
+    # Os arquivos results.txt e annotated.jpg aparecem
+    # automaticamente no host apos a execucao.
+    volumes:
+      - ./output:/app/output
+      - ./test_image.jpg:/app/test_image.jpg:ro  # somente leitura
+
+
+    # ── Argumentos padrao ─────────────────────────────────
+    # Pode ser sobrescrito com: docker compose run yolo-inference
+    #   python app.py --mode classify --input /app/test_image.jpg
+    command: ["--mode", "detect", "--input", "/app/test_image.jpg"]
+
+
+    # ── Politica de reinicializacao ────────────────────────
+    # unless-stopped: reinicia automaticamente (ex: apos reboot)
+    # mas respeita uma parada manual (docker compose stop).
+    restart: unless-stopped
+
