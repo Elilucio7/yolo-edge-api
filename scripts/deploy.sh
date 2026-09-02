@@ -23,7 +23,7 @@ cd "$DEPLOY_PATH"
 
 
 # ── Salva a imagem atual para possível rollback ──────────────
-PREVIOUS=$(docker inspect yolo-api \
+PREVIOUS=$(docker inspect yolo-inference \
     --format '{{.Config.Image}}' 2>/dev/null || echo "none")
 echo "[INFO] Imagem atual: $PREVIOUS"
 
@@ -54,7 +54,7 @@ done
 # ── Avalia o resultado ───────────────────────────────────────
 if [ "$SUCCESS" = true ]; then
     echo "[4/4] Health check OK"
-    NEW=$(docker inspect yolo-api --format '{{.Config.Image}}' 2>/dev/null)
+    NEW=$(docker inspect yolo-inference --format '{{.Config.Image}}' 2>/dev/null)
     echo ""
     echo "[OK] Deploy bem-sucedido: $NEW"
     exit 0
