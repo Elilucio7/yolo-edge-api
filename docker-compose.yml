@@ -3,7 +3,7 @@
 
 services:
   yolo-inference:
-    image: ghcr.io/seu_usuario_em_minusculo/yolo-edge-api/yolo-api:latest
+    image: ghcr.io/elilucio7/yolo-edge-api/yolo-api:latest
     build:
       context: .
       dockerfile: Dockerfile
